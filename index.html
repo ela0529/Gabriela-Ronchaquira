@@ -1,0 +1,36 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Maquillaje</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&components=buttons&currency=USD"></script>
+</head>
+<body>
+    <h1>Mi Tienda de Maquillaje</h1>
+    
+    <!-- Filtro por Categoría -->
+    <div class="filtro">
+        <label for="categoria">Filtrar por Categoría:</label>
+        <select id="categoria" onchange="filtrarPorCategoria()">
+            <option value="all">Todos</option>
+            <option value="labios">Labios</option>
+            <option value="rostro">Rostro</option>
+            <option value="ojos">Ojos</option>
+        </select>
+    </div>
+    
+    <div id="productos" class="contenedor-productos"></div>
+
+    <div class="carrito">
+        <h2>Carrito de Compras</h2>
+        <ul id="lista-carrito"></ul>
+        <p>Total: $<span id="total">0.00</span></p>
+        <button class="vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
+        <div id="paypal-button-container"></div>
+        <button id="pagar" onclick="iniciarPago()" style="display: none;">Pagar</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
