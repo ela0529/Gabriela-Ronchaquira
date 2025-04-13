@@ -50,8 +50,6 @@ function actualizarCarrito() {
         total += item.precio;
     });
     totalCarrito.textContent = total.toFixed(2);
-    // Si hay productos en el carrito, mostrar el botón de pagar
-    document.getElementById("pagar").style.display = carrito.length > 0 ? "inline-block" : "none";
 }
 
 // Vaciar el carrito
@@ -83,29 +81,34 @@ function filtrarPorCategoria() {
     }
 }
 
-// Función para iniciar el pago con PayPal
-function iniciarPago() {
-    const total = parseFloat(totalCarrito.textContent);
-    if (total > 0) {
+// Mostrar el botón de PayPal
+function mostrarBotonPayPal() {
+    if (window.paypal) {
         paypal.Buttons({
             createOrder: function(data, actions) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: total.toFixed(2)
+                            value: totalCarrito.textContent // Usar el valor calculado del carrito
                         }
                     }]
                 });
             },
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
-                    alert("Pago realizado con éxito!");
+                    alert('¡Gracias por tu compra, ' + details.payer.name.given_name + '!');
                     vaciarCarrito(); // Vaciar el carrito después del pago
                 });
+            },
+            onError: function(err) {
+                console.error("Error en la transacción: ", err);
             }
-        }).render("#paypal-button-container");
+        }).render('#paypal-button-container');
+    } else {
+        console.error('PayPal no se ha cargado correctamente.');
     }
 }
 
-// Inicializar la tienda
+// Llamada inicial
 mostrarProductos();
+mostrarBotonPayPal();
